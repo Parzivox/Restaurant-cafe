@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Van der Lin Cafe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Noto+Sans+Lao:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css2.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon"><img src="c:\Users\ASUS TUF GAMING F15\OneDrive\Documents\Desktop\Work\School\restaurant-cafe-interior.webp" alt="Van der Lin Cafe"></div>
+      <div>
+        <h1>Van der Lin</h1>
+        <span data-i18n="brandSub">Cafe & Food Delivery</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="language-switcher">
+        <span class="language-icon">🌐</span>
+        <select id="languageSelect" aria-label="Language">
+          <option value="th">ไทย</option>
+          <option value="lo">ລາວ</option>
+        </select>
+      </div>
+      <button class="icon-btn" id="themeBtn" title="เปลี่ยนธีม">🌙</button>
+      <button class="cart-btn" id="cartTopBtn">
+        🛒 <span data-i18n="cart">ตะกร้า</span>
+        <b id="cartCount">0</b>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Van der Lin Cafe</p>
+        <h2 data-i18n="heroTitle">What are you<br><span>craving today?</span></h2>
+        <p class="hero-text" data-i18n="heroText">เลือกอาหารจานโปรด แล้วให้เราจัดส่งให้ถึงหน้าบ้านคุณ</p>
+        <button class="primary-btn" id="browseBtn" data-i18n="browse">เลือกอาหารเลย →</button>
+      </div>
+      <div class="hero-food">
+        <img src="c:\Users\ASUS TUF GAMING F15\OneDrive\Documents\Desktop\Work\School\restaurant-cafe-interior.webp" alt="Van der Lin Cafe" onerror="this.style.display='none'; this.parentElement.classList.add('image-fallback'); this.parentElement.textContent='🍜';">
+      </div>
+    </section>
+
+    <section class="search-section" id="menuSection">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Van der Lin Menu</p>
+          <h2 data-i18n="menuTitle">เมนูอาหาร</h2>
+        </div>
+        <span id="resultText">0 เมนู</span>
+      </div>
+
+      <div class="search-row">
+        <div class="search-box">
+          🔎
+          <input id="searchInput" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="ค้นหาอาหาร เช่น Sushi, Burger...">
+          <button id="clearSearch" class="clear-btn" aria-label="Clear search">×</button>
+        </div>
+      </div>
+
+      <div class="categories" id="categories"></div>
+
+      <div class="food-grid" id="foodGrid"></div>
+      <div class="empty-state hidden" id="emptyState" data-i18n="noMenu">ไม่พบเมนูที่ค้นหา 😢</div>
+    </section>
+  </main>
+
+  <div class="overlay hidden" id="overlay"></div>
+
+  <aside class="cart-panel" id="cartPanel">
+    <div class="panel-head">
+      <div>
+        <p class="eyebrow" data-i18n="yourOrder">Your order</p>
+        <h2 data-i18n="myCart">ตะกร้าของฉัน</h2>
+      </div>
+      <button class="close-btn" id="closeCart">×</button>
+    </div>
+
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-empty" id="cartEmpty">
+      <div>🛒</div>
+      <h3 data-i18n="emptyCartTitle">ยังไม่มีอาหารในตะกร้า</h3>
+      <p data-i18n="emptyCartText">เลือกเมนูที่ชอบแล้วกดเพิ่มลงตะกร้าได้เลย</p>
+    </div>
+
+    <div class="cart-summary">
+      <div><span data-i18n="foodCost">ค่าอาหาร</span><b id="subtotal">฿0</b></div>
+      <div><span data-i18n="deliveryFee">ค่าส่ง</span><b id="deliveryFee">฿0</b></div>
+      <div class="total"><span data-i18n="grandTotal">รวมทั้งหมด</span><b id="total">฿0</b></div>
+      <button class="primary-btn full" id="checkoutBtn" data-i18n="checkout">สั่งซื้ออาหาร</button>
+    </div>
+  </aside>
+
+  <div class="modal hidden" id="checkoutModal">
+    <div class="modal-card">
+      <button class="close-btn" id="closeModal">×</button>
+      <div class="success-icon">✓</div>
+      <p class="eyebrow">Order confirmation</p>
+      <h2 data-i18n="confirmTitle">ยืนยันคำสั่งซื้อ</h2>
+      <p data-i18n="confirmText">อาหารจะถูกจัดเตรียมและส่งไปยังที่อยู่ของคุณ</p>
+
+      <label><span data-i18n="recipient">ชื่อผู้รับ</span>
+        <input id="customerName" type="text" data-i18n-placeholder="namePlaceholder" placeholder="กรอกชื่อ">
+      </label>
+      <label><span data-i18n="address">ที่อยู่จัดส่ง</span>
+        <textarea id="customerAddress" rows="3" data-i18n-placeholder="addressPlaceholder" placeholder="บ้านเลขที่ / ถนน / แขวง / เขต"></textarea>
+      </label>
+
+      <div class="checkout-total">
+        <span data-i18n="amountDue">ยอดชำระ</span>
+        <b id="checkoutTotal">฿0</b>
+      </div>
+      <button class="primary-btn full" id="confirmOrder" data-i18n="confirmOrder">ยืนยันและสั่งอาหาร</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <nav class="mobile-nav">
+    <button class="nav-active" id="homeNav">⌂<span data-i18n="home">หน้าแรก</span></button>
+    <button id="menuNav">☰<span data-i18n="menu">เมนู</span></button>
+    <button id="cartNav">🛒<span data-i18n="cart">ตะกร้า</span></button>
+  </nav>
+
+  <script src="java2.js"></script>
+</body>
+</html>
